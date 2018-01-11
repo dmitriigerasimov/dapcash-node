@@ -1,0 +1,16 @@
+#!/bin/bash -e
+. /usr/share/debconf/confmodule
+
+case "$1" in
+reconfigure|configure)
+   db_input normal dapcash-node/world_open || true # initial
+   db_go || true # show rq
+
+;;
+*)
+   echo "config called with unknown argument \`$1'" >&2
+   exit 1
+;;
+esac
+
+

@@ -1,0 +1,9 @@
+#!/usr/bin/make -f
+
+override_dh_fixperms:
+    dh_fixperms -X/opt/dap
+override_dh_auto_install:
+    dh_auto_install -- prefix=/opt/dap
+%:
+#    dh $@  --with=systemd
+    dh $@

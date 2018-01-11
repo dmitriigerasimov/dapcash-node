@@ -1,0 +1,6 @@
+Template: dapcash-node/wordl_open
+Type: boolean
+Default: true
+Description: Will we be open for the world as uplink 
+ Select false if you don't want to help anybody to sync blockchain
+

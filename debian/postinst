@@ -1,0 +1,43 @@
+#!/bin/bash -e
+. /usr/share/debconf/confmodule
+
+DAP_PREFIX="/opt/dap"
+DAP_APP_NAME="dapcash-node"
+DAP_CFG_TPL="$DAP_PREFIX/share/$DAP_APP_NAME.cfg.tpl"
+
+# Store write config to new if present smth
+DAP_CFG="$DAP_PREFIX/etc/$DAP_APP_NAME.cfg"
+
+if [ -e "$DAP_CFG" ]; then
+    DAP_CFG="$DAP_PREFIX/etc/$DAP_APP_NAME.cfg.dpkg-new"
+else
+    DAP_CFG="$DAP_PREFIX/etc/$DAP_APP_NAME.cfg"
+fi
+
+cat $DAP_CFG_TPL > $DAP_CFG || true
+
+db_get $DAP_APP_NAME/world_open
+sed -i "s/{WORLD_OPEN}/$RET/" $DAP_CFG  || true
+
+if [ ! -f "$DAP_PREFIX/var/$DAP_APPN_NAME\_whitelist.db" ]; then
+    cp $DAP_PREFIX/share/$DAP_APPN_NAME\_whitelist-default.db $DAP_PREFIX/var/$DAP_APPN_NAME\_whitelist.db
+fi
+
+#if [ ! -f "/etc/init.d/$DAP_APP_NAME" ]; then
+#    ln -sf $DAP_PREFIX/share/$DAP_APP_NAME\_init.d /etc/init.d/$DAP_APP_NAME
+#    chmod 755 /etc/init.d/$DAP_APP_NAME
+#    update-rc.d $DAP_APP_NAME defaults
+#    /etc/init.d/$DAP_APP_NAME start
+#else
+#    /etc/init.d/$DAP_APP_NAME restart
+#fi
+
+if [ -e "/etc/systemd/user/$DAP_APP_NAME.service" ]; then
+    echo "Restart $DAP_APP_NAME to implement changes"
+else
+    ln -sf $DAP_PREFIX/share/$DAP_APP_NAME.service /etc/systemd/user/$DAP_APP_NAME.service
+    systemctl enable dapserver
+    systemctl start dapserver
+fi
+
+echo "For start $DAP_APP_NAME - run 'systemctl start dapserver'"
