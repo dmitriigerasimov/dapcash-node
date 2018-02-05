@@ -4,3 +4,9 @@
 [submodule "submodules/libdap-chain"]
 	path = submodules/libdap-chain
 	url = https://github.com/demlabsinc/libdap-chain
+[submodule "submodules/libdap-server"]
+	path = submodules/libdap-server
+	url = https://github.com/demlabsinc/libdap-server
+[submodule "submodules/libdap-stream"]
+	path = submodules/libdap-stream
+	url = https://github.com/demlabsinc/libdap-stream
